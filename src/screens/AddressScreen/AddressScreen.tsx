@@ -42,50 +42,6 @@ const AddressScreen = () => {
   //   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const navigation = useNavigation<NavigationProps>();
 
-  //   useEffect(() => {
-  //     fetchPaymentIntent();
-  //   }, []);
-
-  //   useEffect(() => {
-  //     if (clientSecret) {
-  //       initializePaymentSheet();
-  //     }
-  //   }, [clientSecret]);
-
-  //   const fetchPaymentIntent = async () => {
-  //     const response = await API.graphql(
-  //       graphqlOperation(createPaymentIntent, { amount })
-  //     );
-  //     setClientSecret(response.data.createPaymentIntent.clientSecret);
-  //   };
-
-  //   const initializePaymentSheet = async () => {
-  //     if (!clientSecret) {
-  //       return;
-  //     }
-  //     const { error } = await initPaymentSheet({
-  //       paymentIntentClientSecret: clientSecret,
-  //     });
-  //     console.log("success");
-  //     if (error) {
-  //       Alert.alert(error);
-  //     }
-  //   };
-
-  //   const openPaymentSheet = async () => {
-  //     if (!clientSecret) {
-  //       return;
-  //     }
-  //     const { error } = await presentPaymentSheet({ clientSecret });
-
-  //     if (error) {
-  //       Alert.alert(`Error code: ${error.code}`, error.message);
-  //     } else {
-  //       saveOrder();
-  //       Alert.alert("Success", "Your payment is confirmed!");
-  //     }
-  //   };
-
   const saveOrder = async () => {
     // get user details
     const userData = await Auth.currentAuthenticatedUser();
@@ -112,9 +68,9 @@ const AddressScreen = () => {
       cartItems.map((cartItem: CartProduct) =>
         DataStore.save(
           new OrderProduct({
-            quantity: cartItem?.quantity!,
+            quantity: cartItem?.quantity,
             option: cartItem.option,
-            productID: cartItem.productID,
+            productID: cartItem.cartProductProductId,
             orderID: newOrder.id,
           })
         )
@@ -122,10 +78,11 @@ const AddressScreen = () => {
     );
 
     // delete all cart items
-    await Promise.all(cartItems.map((cartItem) => DataStore.delete(cartItem)));
+    await Promise.all(
+      cartItems.map((cartItem: CartProduct) => DataStore.delete(cartItem))
+    );
 
     // redirect home
-    navigation.navigate("ProductStore");
   };
 
   const onCheckout = () => {
@@ -146,6 +103,7 @@ const AddressScreen = () => {
 
     // handle payments
     saveOrder();
+    navigation.navigate("ProductStore");
   };
 
   const validateAddress = () => {
@@ -261,3 +219,47 @@ const AddressScreen = () => {
 };
 
 export default AddressScreen;
+
+//   useEffect(() => {
+//     fetchPaymentIntent();
+//   }, []);
+
+//   useEffect(() => {
+//     if (clientSecret) {
+//       initializePaymentSheet();
+//     }
+//   }, [clientSecret]);
+
+//   const fetchPaymentIntent = async () => {
+//     const response = await API.graphql(
+//       graphqlOperation(createPaymentIntent, { amount })
+//     );
+//     setClientSecret(response.data.createPaymentIntent.clientSecret);
+//   };
+
+//   const initializePaymentSheet = async () => {
+//     if (!clientSecret) {
+//       return;
+//     }
+//     const { error } = await initPaymentSheet({
+//       paymentIntentClientSecret: clientSecret,
+//     });
+//     console.log("success");
+//     if (error) {
+//       Alert.alert(error);
+//     }
+//   };
+
+//   const openPaymentSheet = async () => {
+//     if (!clientSecret) {
+//       return;
+//     }
+//     const { error } = await presentPaymentSheet({ clientSecret });
+
+//     if (error) {
+//       Alert.alert(`Error code: ${error.code}`, error.message);
+//     } else {
+//       saveOrder();
+//       Alert.alert("Success", "Your payment is confirmed!");
+//     }
+//   };

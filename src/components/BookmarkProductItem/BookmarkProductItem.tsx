@@ -17,14 +17,12 @@ interface BookmarkProductItemProps {
 const BookmarkProductItem = (props: BookmarkProductItemProps) => {
   //   console.log(bookmarkItem);
   const { bookmarkItem, fetchBookmarkProducts } = props;
-  const { product } = bookmarkItem;
   const { theme } = useContext(ThemeContext);
   const [selectedId, setSelectedId] = useState("");
 
   //Select id of item
   useEffect(() => {
     setSelectedId(bookmarkItem.id);
-
     return () => {
       setSelectedId("");
     };
@@ -60,18 +58,25 @@ const BookmarkProductItem = (props: BookmarkProductItemProps) => {
         },
       ]}
     >
-      <Image style={styles.image} source={{ uri: product?.image }} />
+      <Image
+        style={styles.image}
+        source={{ uri: bookmarkItem.Product?.image }}
+      />
       <View style={styles.middleContainer}>
         <Text style={[styles.title, { color: theme.color }]} numberOfLines={3}>
-          {product?.title}
+          {bookmarkItem.Product?.title}
         </Text>
         {/* Ratings */}
         <View style={styles.ratingsContainer}>
           {[0, 0, 0, 0, 0].map((el, i) => (
             <FontAwesome
-              key={`${product?.id}-${i}`}
+              key={`${bookmarkItem.Product?.id}-${i}`}
               style={styles.star}
-              name={i < Math.floor(product.avgRating) ? "star" : "star-o"}
+              name={
+                i < Math.floor(bookmarkItem.Product?.avgRating)
+                  ? "star"
+                  : "star-o"
+              }
               size={17}
               color={"#3faa97"}
             />
@@ -80,11 +85,10 @@ const BookmarkProductItem = (props: BookmarkProductItemProps) => {
       </View>
       <View style={styles.rightContainer}>
         <Text style={[styles.price, { color: theme.color }]}>
-          from ${product?.price?.toFixed(2)}
-          {product?.oldPrice && (
+          from ${bookmarkItem.Product?.price?.toFixed(2)}
+          {bookmarkItem.Product?.oldPrice && (
             <Text style={[styles.oldPrice, { color: theme.error }]}>
-              {" "}
-              ${product?.oldPrice.toFixed(2)}
+              ${bookmarkItem.Product?.oldPrice.toFixed(2)}
             </Text>
           )}
         </Text>

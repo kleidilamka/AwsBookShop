@@ -128,7 +128,7 @@ export declare class User {
 
 export declare class OrderProduct {
   readonly id: string;
-  readonly quantity?: string;
+  readonly quantity?: number;
   readonly option?: string;
   readonly Order?: Order;
   readonly Product?: Product;

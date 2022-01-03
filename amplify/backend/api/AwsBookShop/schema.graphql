@@ -63,7 +63,7 @@ type Product @model @auth(rules: [{allow: public}]) {
 
 type OrderProduct @model @auth(rules: [{allow: public}]) {
   id: ID!
-  quantity: String
+  quantity: Int
   option: String
   Order: Order @hasOne
   Product: Product @hasOne
@@ -78,3 +78,4 @@ type Order @model @auth(rules: [{allow: public}]) {
   city: String
   address: String
 }
+ 

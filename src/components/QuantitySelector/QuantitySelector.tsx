@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
 interface QuantitySelectorProps {
-  quantity: number | undefined;
+  quantity: number | undefined | string;
   setQuantity: (newQuantity: number) => Promise<void>;
 }
 

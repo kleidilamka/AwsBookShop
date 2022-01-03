@@ -13,12 +13,7 @@
     },
     "categories": {
       "auth": {
-        "awsbookshop12608fbb": {
-          "userPoolId": "eu-central-1_DGeAKoHXM",
-          "userPoolName": "bookalofinal",
-          "webClientId": "38pv0mtgonct4nrdsfdchg4uo9",
-          "nativeClientId": "4eef4g5o4gktbgtcf20oulqeh5"
-        }
+        "AwsBookShop": {}
       }
     }
   }

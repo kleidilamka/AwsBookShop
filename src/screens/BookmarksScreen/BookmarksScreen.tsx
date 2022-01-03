@@ -30,7 +30,7 @@ const BookmarksScreen = () => {
     const userData = await Auth.currentAuthenticatedUser();
 
     // TODO query only my bookmarks items
-    const bookmarkedItem = await DataStore.query(BookmarkProduct, (cp) =>
+    const bookmarkedItem = await DataStore.query(BookmarkProduct, (cp: any) =>
       cp.userSub("eq", userData.attributes.sub)
     );
 
@@ -38,7 +38,15 @@ const BookmarksScreen = () => {
   };
 
   useEffect(() => {
-    if (bookmarksProduct.filter((cp) => !cp.product).length === 0) {
+    fetchBookmarkProducts();
+
+    return () => {
+      setBookmarksProduct([]);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (bookmarksProduct.filter((cp) => !cp.Product).length === 0) {
       return;
     }
 
@@ -49,7 +57,7 @@ const BookmarksScreen = () => {
       // query all products that are used in bookmarks
       const products = await Promise.all(
         bookmarksProduct.map((bookmarkProduct: BookmarkProduct | any) =>
-          DataStore.query(Product, bookmarkProduct.productID)
+          DataStore.query(Product, bookmarkProduct.bookmarkProductProductId)
         )
       );
       // assign the products to the bookmarks items
@@ -58,7 +66,7 @@ const BookmarksScreen = () => {
         currentBookmarkedProducts.map(
           (bookmarkProduct: BookmarkProduct | any) => ({
             product: products.find(
-              (p: any) => p.id === bookmarkProduct.productID
+              (p: any) => p.id === bookmarkProduct.bookmarkProductProductId
             ),
           })
         )
@@ -73,7 +81,7 @@ const BookmarksScreen = () => {
   }, [bookmarksProduct]);
 
   if (
-    bookmarksProduct.filter((cp: BookmarkProduct) => !cp.product).length !== 0
+    bookmarksProduct.filter((cp: BookmarkProduct) => !cp.Product).length !== 0
   ) {
     return <ActivityIndicator />;
   }
@@ -89,7 +97,6 @@ const BookmarksScreen = () => {
           <BookmarkProductItem
             key={item.id}
             bookmarkItem={item}
-            bookmarks={bookmarksProduct}
             fetchBookmarkProducts={fetchBookmarkProducts}
           />
         )}

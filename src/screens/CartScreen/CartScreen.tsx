@@ -41,7 +41,6 @@ const CartScreen = () => {
 
   useEffect(() => {
     fetchCartProducts();
-    console.log();
     return () => {
       setCartProducts([]);
     };
