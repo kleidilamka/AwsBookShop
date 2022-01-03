@@ -1,0 +1,25 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-awsbookshop-staging-180808-authRole",
+      "UnauthRoleArn": "arn:aws:iam::876276405273:role/amplify-awsbookshop-staging-180808-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::876276405273:role/amplify-awsbookshop-staging-180808-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-awsbookshop-staging-180808-deployment",
+      "UnauthRoleName": "amplify-awsbookshop-staging-180808-unauthRole",
+      "StackName": "amplify-awsbookshop-staging-180808",
+      "StackId": "arn:aws:cloudformation:eu-central-1:876276405273:stack/amplify-awsbookshop-staging-180808/1b4b19b0-6cc0-11ec-a132-0265481c392a",
+      "AmplifyAppId": "d16x5wcpwpghmt"
+    },
+    "categories": {
+      "auth": {
+        "awsbookshop12608fbb": {
+          "userPoolId": "eu-central-1_DGeAKoHXM",
+          "userPoolName": "bookalofinal",
+          "webClientId": "38pv0mtgonct4nrdsfdchg4uo9",
+          "nativeClientId": "4eef4g5o4gktbgtcf20oulqeh5"
+        }
+      }
+    }
+  }
+}

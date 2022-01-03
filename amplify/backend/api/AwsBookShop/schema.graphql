@@ -1,0 +1,80 @@
+type BookmarkProduct @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userSub: String
+  quantity: Int
+  option: String
+  Product: Product @hasOne
+  isBookmarked: Boolean
+}
+
+type CartProduct @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userSub: String
+  quantity: Int
+  option: String
+  Product: Product @hasOne
+  inCart: Boolean
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Comments: [Comment] @hasMany(indexName: "byUser", fields: ["id"])
+  username: String
+  email: String
+  image: String
+  sub: String
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  address: String
+  city: String
+}
+
+type Comment @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  comment: String
+  likes: Int
+  dislikes: Int
+  productID: ID @index(name: "byProduct")
+  userID: ID @index(name: "byUser")
+}
+
+type Category @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String
+}
+
+type Product @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String
+  description: String
+  Category: Category @hasOne
+  image: String
+  author: String
+  avgRating: Float
+  ratings: Int
+  countInStock: Int
+  price: Float
+  oldPrice: Float
+  inBookmarks: Boolean
+  inCart: Boolean
+  Comments: [Comment] @hasMany(indexName: "byProduct", fields: ["id"])
+}
+
+type OrderProduct @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  quantity: String
+  option: String
+  Order: Order @hasOne
+  Product: Product @hasOne
+}
+
+type Order @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userSub: String
+  fullName: String
+  phoneNumber: String
+  country: String
+  city: String
+  address: String
+}

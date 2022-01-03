@@ -1,20 +1,56 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import "react-native-gesture-handler";
 
-export default function App() {
+import React, { useEffect } from "react";
+import { LogBox } from "react-native";
+LogBox.ignoreAllLogs();
+
+import Amplify, { Auth, DataStore } from "aws-amplify";
+import config from "./src/aws-exports";
+import { ThemeProvider } from "./src/contexts/themeContext";
+import { AuthProvider } from "./src/contexts/authContext";
+import AppNavigator from "./src/navigation/AppNavigator";
+import { User } from "./src/models";
+Amplify.configure(config);
+const App = () => {
+  useEffect(() => {
+    saveUserToDB();
+  }, []);
+
+  const saveUserToDB = async () => {
+    // get user  from cognito
+    const userInfo = await Auth.currentAuthenticatedUser();
+
+    if (!userInfo) {
+      return;
+    }
+    const userId = userInfo.attributes.sub;
+
+    // check if user exists in DB
+    const user = (await DataStore.query(User)).find(
+      (user: User) => user.sub === userId
+    );
+    if (!user) {
+      // if not, save user to db.
+      await DataStore.save(
+        new User({
+          sub: userId,
+          username: "",
+          email: userInfo.attributes.email,
+          image: "",
+        })
+      );
+    } else {
+      console.warn("User already exists in DB");
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppNavigator />
+      </AuthProvider>
+    </ThemeProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
