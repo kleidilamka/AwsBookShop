@@ -39,7 +39,7 @@ const SearchedProduct = ({ product }: SearchedProductProps) => {
     const newCartProduct = new CartProduct({
       userSub: userData.attributes.sub,
       quantity,
-      productID: singleProduct.id,
+      cartProductProductId: singleProduct.id,
     });
 
     await DataStore.save(newCartProduct);
@@ -59,7 +59,7 @@ const SearchedProduct = ({ product }: SearchedProductProps) => {
     const newBookmarkProduct = new BookmarkProduct({
       userSub: userData.attributes.sub,
       quantity,
-      productID: singleProduct.id,
+      bookmarkProductProductId: singleProduct.id,
     });
 
     await DataStore.save(newBookmarkProduct);

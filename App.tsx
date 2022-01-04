@@ -14,6 +14,10 @@ Amplify.configure(config);
 const App = () => {
   useEffect(() => {
     saveUserToDB();
+
+    return () => {
+      saveUserToDB();
+    };
   }, []);
 
   const saveUserToDB = async () => {

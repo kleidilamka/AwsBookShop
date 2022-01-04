@@ -13,6 +13,19 @@ const BookmarksScreen = () => {
   );
   const { theme } = useContext(ThemeContext);
 
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      // Call any action
+      fetchBookmarkProducts();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, []);
+
   const fetchBookmarkProducts = async () => {
     const userData = await Auth.currentAuthenticatedUser();
     // TODO query only my cart items
@@ -56,12 +69,6 @@ const BookmarksScreen = () => {
 
     fetchProducts();
   }, []);
-
-  // if (
-  //   bookmarksProduct.filter((cp: BookmarkProduct) => !cp.Product).length !== 0
-  // ) {
-  //   return <ActivityIndicator />;
-  // }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.backgroundColor }}>

@@ -26,12 +26,12 @@ const CartScreen = () => {
   const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
   const { theme } = useContext(ThemeContext);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProps>();
 
   const fetchCartProducts = async () => {
     const userData = await Auth.currentAuthenticatedUser();
     // TODO query only my cart items
-    DataStore.query(CartProduct, (cp) =>
+    DataStore.query(CartProduct, (cp: any) =>
       cp.userSub("eq", userData.attributes.sub)
     ).then(setCartProducts);
   };
@@ -73,7 +73,7 @@ const CartScreen = () => {
   }, []);
 
   useEffect(() => {
-    const subscription = DataStore.observe(CartProduct).subscribe((msg) =>
+    const subscription = DataStore.observe(CartProduct).subscribe((msg: any) =>
       fetchCartProducts()
     );
     return subscription.unsubscribe;
@@ -81,7 +81,7 @@ const CartScreen = () => {
 
   useEffect(() => {
     const subscriptions = cartProducts.map((cp) =>
-      DataStore.observe(CartProduct, cp.id).subscribe((msg) => {
+      DataStore.observe(CartProduct, cp.id).subscribe((msg: any) => {
         if (msg.opType === "UPDATE") {
           setCartProducts((curCartProducts) =>
             curCartProducts.map((cp) => {
