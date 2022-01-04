@@ -77,6 +77,7 @@ const ProductDetailsScreen = () => {
     });
 
     await DataStore.save(newBookmarkProduct);
+    console.log(newBookmarkProduct);
 
     navigation.navigate("Bookmarks");
   };

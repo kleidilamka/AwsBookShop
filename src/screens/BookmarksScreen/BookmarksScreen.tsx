@@ -11,21 +11,21 @@ const BookmarksScreen = () => {
   const [bookmarksProduct, setBookmarksProduct] = useState<BookmarkProduct[]>(
     []
   );
-  const { dark, theme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   const fetchBookmarkProducts = async () => {
     const userData = await Auth.currentAuthenticatedUser();
-
-    // TODO query only my bookmarks items
-    const bookmarkedItem = await DataStore.query(BookmarkProduct, (cp) =>
+    // TODO query only my cart items
+    DataStore.query(BookmarkProduct, (cp) =>
       cp.userSub("eq", userData.attributes.sub)
-    );
-
-    setBookmarksProduct(bookmarkedItem);
+    ).then(setBookmarksProduct);
   };
 
   useEffect(() => {
     fetchBookmarkProducts();
+    return () => {
+      setBookmarksProduct([]);
+    };
   }, []);
 
   useEffect(() => {
@@ -34,32 +34,28 @@ const BookmarksScreen = () => {
     }
 
     const fetchProducts = async () => {
-      // create a new order
-      // fetch all cart items
-
-      // query all products that are used in bookmarks
+      // query all products that are used in cart
       const products = await Promise.all(
-        bookmarksProduct.map((bookmarkProduct: BookmarkProduct | any) =>
-          DataStore.query(Product, bookmarkProduct.bookmarkProductProductId)
+        bookmarksProduct.map((bookmarksProduct) =>
+          DataStore.query(Product, bookmarksProduct?.id)
         )
       );
 
-      console.log(products);
-      // assign the products to the bookmarks items
-
-      setBookmarksProduct((currentBookmarkedProducts: any) =>
-        currentBookmarkedProducts.map(
-          (bookmarkProduct: BookmarkProduct | any) => ({
-            product: products.find(
-              (p: any) => p.id === bookmarkProduct.bookmarkProductProductId
-            ),
-          })
-        )
+      // assign the products to the cart items
+      setBookmarksProduct((currentBookmarkProduct) =>
+        currentBookmarkProduct.map((bookmarkProduct) => ({
+          ...bookmarkProduct,
+          product: products.find((p) => p.id === bookmarkProduct?.id),
+        }))
       );
+
+      return () => {
+        setBookmarksProduct([]);
+      };
     };
 
     fetchProducts();
-  }, [bookmarksProduct]);
+  }, []);
 
   // if (
   //   bookmarksProduct.filter((cp: BookmarkProduct) => !cp.Product).length !== 0

@@ -26,17 +26,14 @@ const CartScreen = () => {
   const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
   const { theme } = useContext(ThemeContext);
 
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
 
   const fetchCartProducts = async () => {
     const userData = await Auth.currentAuthenticatedUser();
     // TODO query only my cart items
-
-    const cartItem = await DataStore.query(CartProduct, (cp: any) =>
+    DataStore.query(CartProduct, (cp) =>
       cp.userSub("eq", userData.attributes.sub)
-    );
-
-    setCartProducts(cartItem);
+    ).then(setCartProducts);
   };
 
   useEffect(() => {
@@ -54,27 +51,29 @@ const CartScreen = () => {
     const fetchProducts = async () => {
       // query all products that are used in cart
       const products = await Promise.all(
-        cartProducts.map((cartProduct: CartProduct | any) =>
-          DataStore.query(Product, cartProduct.cartProductProductId)
+        cartProducts.map((cartProduct) =>
+          DataStore.query(Product, cartProduct?.id)
         )
       );
 
       // assign the products to the cart items
-      setCartProducts((currentCartProducts: CartProduct[]) =>
-        currentCartProducts.map((cartProduct: CartProduct | any) => ({
+      setCartProducts((currentCartProducts) =>
+        currentCartProducts.map((cartProduct) => ({
           ...cartProduct,
-          product: products.find(
-            (p: any) => p.id === cartProduct.cartProductProductId
-          ),
+          product: products.find((p) => p.id === cartProduct?.id),
         }))
       );
+
+      return () => {
+        setCartProducts([]);
+      };
     };
 
     fetchProducts();
-  }, [cartProducts]);
+  }, []);
 
   useEffect(() => {
-    const subscription = DataStore.observe(CartProduct).subscribe((msg: any) =>
+    const subscription = DataStore.observe(CartProduct).subscribe((msg) =>
       fetchCartProducts()
     );
     return subscription.unsubscribe;
@@ -82,24 +81,22 @@ const CartScreen = () => {
 
   useEffect(() => {
     const subscriptions = cartProducts.map((cp) =>
-      DataStore.observe(CartProduct, cp.cartProductProductId).subscribe(
-        (msg: any) => {
-          if (msg.opType === "UPDATE") {
-            setCartProducts((curCartProducts) =>
-              curCartProducts.map((cp) => {
-                if (cp.id !== msg.element.id) {
-                  console.log("different id");
-                  return cp;
-                }
-                return {
-                  ...cp,
-                  ...msg.element,
-                };
-              })
-            );
-          }
+      DataStore.observe(CartProduct, cp.id).subscribe((msg) => {
+        if (msg.opType === "UPDATE") {
+          setCartProducts((curCartProducts) =>
+            curCartProducts.map((cp) => {
+              if (cp.id !== msg.element.id) {
+                console.log("differnt id");
+                return cp;
+              }
+              return {
+                ...cp,
+                ...msg.element,
+              };
+            })
+          );
         }
-      )
+      })
     );
 
     return () => {
@@ -108,7 +105,7 @@ const CartScreen = () => {
   }, [cartProducts]);
 
   const totalPrice = cartProducts.reduce(
-    (summedPrice: number, product: CartProduct) =>
+    (summedPrice, product) =>
       summedPrice + (product?.Product?.price || 0) * product?.quantity!,
     0
   );
@@ -120,10 +117,6 @@ const CartScreen = () => {
   const onDeleteAll = async () => {
     DataStore.delete(CartProduct, Predicates.ALL);
   };
-
-  if (cartProducts.filter((cp) => !cp.Product).length !== 0) {
-    return <ActivityIndicator />;
-  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
