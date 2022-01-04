@@ -11,26 +11,13 @@ const BookmarksScreen = () => {
   const [bookmarksProduct, setBookmarksProduct] = useState<BookmarkProduct[]>(
     []
   );
-  const { theme } = useContext(ThemeContext);
-
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      // The screen is focused
-      // Call any action
-      fetchBookmarkProducts();
-    });
-
-    // Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, []);
+  const { dark, theme } = useContext(ThemeContext);
 
   const fetchBookmarkProducts = async () => {
     const userData = await Auth.currentAuthenticatedUser();
 
     // TODO query only my bookmarks items
-    const bookmarkedItem = await DataStore.query(BookmarkProduct, (cp: any) =>
+    const bookmarkedItem = await DataStore.query(BookmarkProduct, (cp) =>
       cp.userSub("eq", userData.attributes.sub)
     );
 
@@ -39,10 +26,6 @@ const BookmarksScreen = () => {
 
   useEffect(() => {
     fetchBookmarkProducts();
-
-    return () => {
-      setBookmarksProduct([]);
-    };
   }, []);
 
   useEffect(() => {
@@ -60,6 +43,8 @@ const BookmarksScreen = () => {
           DataStore.query(Product, bookmarkProduct.bookmarkProductProductId)
         )
       );
+
+      console.log(products);
       // assign the products to the bookmarks items
 
       setBookmarksProduct((currentBookmarkedProducts: any) =>
@@ -74,17 +59,13 @@ const BookmarksScreen = () => {
     };
 
     fetchProducts();
-
-    return () => {
-      setBookmarksProduct([]);
-    };
   }, [bookmarksProduct]);
 
-  if (
-    bookmarksProduct.filter((cp: BookmarkProduct) => !cp.Product).length !== 0
-  ) {
-    return <ActivityIndicator />;
-  }
+  // if (
+  //   bookmarksProduct.filter((cp: BookmarkProduct) => !cp.Product).length !== 0
+  // ) {
+  //   return <ActivityIndicator />;
+  // }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.backgroundColor }}>

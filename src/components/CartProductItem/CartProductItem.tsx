@@ -52,10 +52,13 @@ const CartProductItem = (props: CartProductItemProps) => {
         },
       ]}
     >
-      <Image style={styles.image} source={{ uri: cartItem?.Product?.image }} />
+      <Image
+        style={styles.image}
+        source={{ uri: cartProduct?.Product?.image }}
+      />
       <View style={styles.middleContainer}>
         <Text style={[styles.title, { color: theme.color }]} numberOfLines={3}>
-          {cartItem?.Product?.title}
+          {cartProduct?.Product?.title}
         </Text>
         {/* Ratings
         <View style={styles.ratingsContainer}>
@@ -72,11 +75,11 @@ const CartProductItem = (props: CartProductItemProps) => {
       </View>
       <View style={styles.rightContainer}>
         <Text style={[styles.price, { color: theme.color }]}>
-          from ${cartItem?.Product?.price?.toFixed(2)}
-          {cartItem?.Product?.oldPrice && (
+          from ${cartProduct?.Product?.price?.toFixed(2)}
+          {cartProduct?.Product?.oldPrice && (
             <Text style={[styles.oldPrice, { color: theme.error }]}>
               {" "}
-              ${cartItem?.Product?.oldPrice.toFixed(2)}
+              ${cartProduct?.Product?.oldPrice.toFixed(2)}
             </Text>
           )}
         </Text>
