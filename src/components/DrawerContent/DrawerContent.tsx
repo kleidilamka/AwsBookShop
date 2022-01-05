@@ -29,7 +29,7 @@ const DrawerContent = () => {
   const navigation = useNavigation<NavigationProps>();
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener("state", () => {
       // The screen is focused
       // Call any action
       fetchUser();
@@ -102,9 +102,7 @@ const DrawerContent = () => {
           >
             {user?.firstName} {user?.lastName}
           </Text>
-          <Text style={{ color: theme.color }}>
-            {user?.email?.split("@")[0]}
-          </Text>
+          <Text style={{ color: theme.color }}>{user?.username}</Text>
         </View>
       </View>
       <ScrollView style={{ flex: 1, marginTop: 20 }}>
