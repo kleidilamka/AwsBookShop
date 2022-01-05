@@ -14,8 +14,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   image: {
+    maxWidth: width / 2.3,
+    maxHeight: width / 2.3,
     width: width / 2.3,
     height: width / 2.3,
+
     backgroundColor: "transparent",
     marginBottom: 6,
     borderRadius: 4,

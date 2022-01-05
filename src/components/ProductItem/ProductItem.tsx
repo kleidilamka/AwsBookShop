@@ -66,12 +66,13 @@ const ProductItem = (props: ProductItemProps) => {
           : item.author}
       </Text>
       <Text
+        numberOfLines={1}
         style={[
           styles.title,
           { color: theme.color, fontWeight: "400", fontSize: 15 },
         ]}
       >
-        {item.title.length < 10 ? item.title.substring(0, 11 - 3) : item.title}
+        {item.title}
       </Text>
     </TouchableOpacity>
   );

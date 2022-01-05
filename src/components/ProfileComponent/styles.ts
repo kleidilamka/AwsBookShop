@@ -1,21 +1,13 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-var { width } = Dimensions.get("window");
+var { width, height } = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
-  linearGradient: {
-    flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
   container: {
     backgroundColor: "#fff",
-    height: 400,
-    width: width / 1.3,
+    height: height - 230,
+
+    width: width - 50,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
@@ -28,35 +20,38 @@ const styles = StyleSheet.create({
     shadowRadius: 6.3,
     elevation: 13,
   },
-  title: {
-    position: "absolute",
-    left: 15,
-    top: 15,
-    fontSize: 25,
-    fontWeight: "800",
+  image: {
+    borderWidth: 2,
+    borderColor: "#543534",
+    borderRadius: 100,
+    height: width / 3.5,
+    width: width / 3.5,
+    marginBottom: 25,
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#d9dae0",
     height: 50,
     marginBottom: 20,
-    width: "80%",
+    width: width - 100,
     // backgroundColor: '#d9dae0',
     borderRadius: 7,
     paddingLeft: 10,
+    shadowColor: "#3c3c3c",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.39,
+    shadowRadius: 8.3,
+    elevation: 13,
   },
-  forgotPasswordBtn: {
-    marginBottom: 40,
-    alignSelf: "flex-end",
-    marginRight: 25,
-  },
-  signUpBtn: {
+  submitButton: {
     backgroundColor: "#3faa97",
     height: 60,
-    width: "80%",
+    width: width - 100,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
+    marginTop: 10,
   },
 });
 

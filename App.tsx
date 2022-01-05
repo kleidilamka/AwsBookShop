@@ -38,7 +38,7 @@ const App = () => {
       await DataStore.save(
         new User({
           sub: userId,
-          username: "",
+          username: userInfo.attributes.email.split("@")[0],
           email: userInfo.attributes.email,
           image: "",
         })

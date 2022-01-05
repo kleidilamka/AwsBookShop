@@ -16,6 +16,7 @@ import { DrawerScreenProps } from "@react-navigation/drawer";
 import { RootStackParamsList } from "./navigationTypes";
 import SearchScreen from "../screens/SearchScreen";
 import FakeScreen from "../screens/FakeScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 type StackNavigationProps = StackScreenProps<RootStackParamsList>;
 type DrawerNavigationProps = DrawerScreenProps<RootStackParamsList>;
@@ -231,14 +232,14 @@ const MainNavigator = ({
         }}
       />
       <Stack.Screen
-        name="FakeScreen"
-        component={FakeScreen}
+        name="Profile"
+        component={ProfileScreen}
         options={{
           headerShown: true,
           headerStyle: {
             backgroundColor: theme.iconBgColor,
           },
-          headerTitle: "Support",
+          headerTitle: "Profile",
           headerTintColor: "#fff",
           headerLeft: () => {
             return (

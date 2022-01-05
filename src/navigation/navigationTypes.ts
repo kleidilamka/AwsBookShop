@@ -9,6 +9,7 @@ export type RootStackParamsList = {
   ChangePassword: undefined;
   Support: undefined;
   Search: undefined;
+  Profile: undefined;
 };
 
 export type AuthStackParamsList = {

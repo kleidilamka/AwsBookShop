@@ -44,10 +44,8 @@ const ProductStore = () => {
     ctg === "all"
       ? [setProductCtg(initialState), setActive(true)]
       : [
-          setProductCtg(
-            products.filter((i) => i.Category?.id === ctg),
-            setActive(true)
-          ),
+          setActive(true),
+          setProductCtg(products.filter((i) => i.Category?.id === ctg)),
         ];
   };
 

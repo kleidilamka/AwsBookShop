@@ -6,12 +6,10 @@ import {
   StyleSheet,
   ScrollView,
   Switch,
-  Button,
 } from "react-native";
-import userData from "../../data/userData";
 
 import { DrawerItem } from "@react-navigation/drawer";
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather, AntDesign } from "@expo/vector-icons";
 import { useAuthDispatch } from "../../contexts/authContext";
 import { signOut } from "../../services/authService";
 import { ThemeContext } from "../../contexts/themeContext";
@@ -31,27 +29,31 @@ const DrawerContent = () => {
   const navigation = useNavigation<NavigationProps>();
 
   useEffect(() => {
-    // get the current user
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      // Call any action
+      fetchUser();
+    });
 
-    const fetchUser = async () => {
-      const userInfo = await Auth.currentAuthenticatedUser();
-      if (!userInfo) {
-        return;
-      }
-      const userSub = userInfo.attributes.sub;
-
-      console.log(userSub);
-
-      const userData = await (
-        await DataStore.query(User)
-      ).find((u: any) => u.sub === userSub);
-
-      console.log(userData);
-      setUser(userData);
-    };
-
-    fetchUser();
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
   }, []);
+
+  const fetchUser = async () => {
+    const userInfo = await Auth.currentAuthenticatedUser();
+    if (!userInfo) {
+      return;
+    }
+    const userSub = userInfo.attributes.sub;
+
+    console.log(userSub);
+
+    const userData = await (
+      await DataStore.query(User)
+    ).find((u: any) => u.sub === userSub);
+
+    setUser(userData);
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -76,7 +78,11 @@ const DrawerContent = () => {
       >
         <View style={{ flex: 1.3, alignItems: "center" }}>
           <Image
-            source={{ uri: user?.image }}
+            source={{
+              uri: user?.image
+                ? user?.image
+                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+            }}
             style={{ height: 83, width: 83, borderRadius: 45 }}
           />
         </View>
@@ -96,7 +102,9 @@ const DrawerContent = () => {
           >
             {user?.firstName} {user?.lastName}
           </Text>
-          <Text style={{ color: theme.color }}>{user?.email}</Text>
+          <Text style={{ color: theme.color }}>
+            {user?.email?.split("@")[0]}
+          </Text>
         </View>
       </View>
       <ScrollView style={{ flex: 1, marginTop: 20 }}>
@@ -113,6 +121,17 @@ const DrawerContent = () => {
             labelStyle={{ color: theme.color }}
             onPress={() => {
               navigation.navigate("ProductStore");
+            }}
+          />
+
+          <DrawerItem
+            icon={({ color, size }) => (
+              <AntDesign name="user" color={theme.iconBgColor} size={size} />
+            )}
+            label="Profile"
+            labelStyle={{ color: theme.color }}
+            onPress={() => {
+              navigation.navigate("Profile");
             }}
           />
 
