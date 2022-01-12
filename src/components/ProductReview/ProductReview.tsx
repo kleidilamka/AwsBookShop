@@ -4,6 +4,8 @@ import { View, Text, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { ThemeContext } from "../../contexts/themeContext";
 import { Comment, User } from "../../models";
+import { FontAwesome } from "@expo/vector-icons";
+
 import styles from "./styles";
 
 interface ProductReviewProps {
@@ -20,9 +22,13 @@ const ProductReview = ({ comment, fetchComments }: ProductReviewProps) => {
   });
 
   const deleteComment = async () => {
-    const commentToDelete = await DataStore.query(Comment, comment.id);
+    if (user) {
+      const commentToDelete = await DataStore.query(Comment, comment.id);
 
-    await DataStore.delete(commentToDelete);
+      await DataStore.delete(commentToDelete);
+    } else {
+      return;
+    }
 
     fetchComments();
   };
@@ -34,7 +40,6 @@ const ProductReview = ({ comment, fetchComments }: ProductReviewProps) => {
         { backgroundColor: theme.backgroundCard },
       ]}
     >
-      <Image style={styles.image} source={{ uri: user?.image }} />
       <View
         style={[
           styles.comment,
@@ -51,8 +56,17 @@ const ProductReview = ({ comment, fetchComments }: ProductReviewProps) => {
           {comment.comment}
         </Text>
       </View>
-      <TouchableOpacity onPress={deleteComment}>
-        <Text>Delete</Text>
+      <TouchableOpacity style={styles.deleteBtn} onPress={deleteComment}>
+        <FontAwesome
+          name="trash-o"
+          color={theme.iconBgColor}
+          size={28}
+          // style={[
+          //   {
+          //     backgroundColor: theme.iconBgColor,
+          //   },
+          // ]}
+        />
       </TouchableOpacity>
     </View>
   );

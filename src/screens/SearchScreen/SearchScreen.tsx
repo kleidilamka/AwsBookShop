@@ -41,8 +41,9 @@ const SearchScreen = ({ navigation }) => {
     <View style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
       {/* Render Product Component */}
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, { backgroundColor: theme.backgroundColor }]}
         placeholder="Search"
+        placeholderTextColor={theme.color}
         onChangeText={(text) => searchProduct(text)}
       />
       <FlatList

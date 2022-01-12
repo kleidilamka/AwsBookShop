@@ -60,18 +60,6 @@ const CartProductItem = (props: CartProductItemProps) => {
         <Text style={[styles.title, { color: theme.color }]} numberOfLines={3}>
           {cartProduct?.Product?.title}
         </Text>
-        {/* Ratings
-        <View style={styles.ratingsContainer}>
-          {[0, 0, 0, 0, 0].map((el, i) => (
-            <FontAwesome
-              key={`${product?.id}-${i}`}
-              style={styles.star}
-              name={i < Math.floor(product.avgRating) ? "star" : "star-o"}
-              size={17}
-              color={"#3faa97"}
-            />
-          ))}
-        </View> */}
       </View>
       <View style={styles.rightContainer}>
         <Text style={[styles.price, { color: theme.color }]}>

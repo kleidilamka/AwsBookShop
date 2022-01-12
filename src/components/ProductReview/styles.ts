@@ -40,6 +40,11 @@ const styles = StyleSheet.create({
     shadowRadius: 8.3,
     elevation: 13,
   },
+  // deleteBtn: {
+  //   borderWidth: 1,
+  //   padding: 10,
+
+  // },
 });
 
 export default styles;

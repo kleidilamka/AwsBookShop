@@ -1,4 +1,4 @@
-type BookmarkProduct @model @auth(rules: [{allow: public}]) {
+type BookmarkProduct @model @auth(rules: [{ allow: public }]) {
   id: ID!
   userSub: String
   quantity: Int
@@ -7,7 +7,7 @@ type BookmarkProduct @model @auth(rules: [{allow: public}]) {
   isBookmarked: Boolean
 }
 
-type CartProduct @model @auth(rules: [{allow: public}]) {
+type CartProduct @model @auth(rules: [{ allow: public }]) {
   id: ID!
   userSub: String
   quantity: Int
@@ -16,7 +16,7 @@ type CartProduct @model @auth(rules: [{allow: public}]) {
   inCart: Boolean
 }
 
-type User @model @auth(rules: [{allow: public}]) {
+type User @model @auth(rules: [{ allow: public }]) {
   id: ID!
   Comments: [Comment] @hasMany(indexName: "byUser", fields: ["id"])
   username: String
@@ -30,7 +30,7 @@ type User @model @auth(rules: [{allow: public}]) {
   city: String
 }
 
-type Comment @model @auth(rules: [{allow: public}]) {
+type Comment @model @auth(rules: [{ allow: public }]) {
   id: ID!
   comment: String
   likes: Int
@@ -39,12 +39,12 @@ type Comment @model @auth(rules: [{allow: public}]) {
   userID: ID @index(name: "byUser")
 }
 
-type Category @model @auth(rules: [{allow: public}]) {
+type Category @model @auth(rules: [{ allow: public }]) {
   id: ID!
   title: String
 }
 
-type Product @model @auth(rules: [{allow: public}]) {
+type Product @model @auth(rules: [{ allow: public }]) {
   id: ID!
   title: String
   description: String
@@ -61,7 +61,7 @@ type Product @model @auth(rules: [{allow: public}]) {
   Comments: [Comment] @hasMany(indexName: "byProduct", fields: ["id"])
 }
 
-type OrderProduct @model @auth(rules: [{allow: public}]) {
+type OrderProduct @model @auth(rules: [{ allow: public }]) {
   id: ID!
   quantity: Int
   option: String
@@ -69,7 +69,7 @@ type OrderProduct @model @auth(rules: [{allow: public}]) {
   Product: Product @hasOne
 }
 
-type Order @model @auth(rules: [{allow: public}]) {
+type Order @model @auth(rules: [{ allow: public }]) {
   id: ID!
   userSub: String
   fullName: String
@@ -78,4 +78,3 @@ type Order @model @auth(rules: [{allow: public}]) {
   city: String
   address: String
 }
- 

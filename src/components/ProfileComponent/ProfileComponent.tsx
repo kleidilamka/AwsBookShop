@@ -79,7 +79,6 @@ const ProfileComponent = (props: ProfileComponentProps) => {
     <View
       style={[styles.container, { backgroundColor: theme.backgroundColor }]}
     >
-      <Image source={{ uri: "" }} style={styles.image} />
       <TextInput
         placeholder="First Name"
         placeholderTextColor={dark ? "lightgrey" : "grey"}
